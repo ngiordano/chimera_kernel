@@ -1,0 +1,11 @@
+#!/system/bin/sh
+#
+cat /proc/last_kmsg > /data/local/lastkmsg.txt
+if [ -e /data/data/mobi.cyann.nstools/settings/default ];
+then
+echo "#!/system/bin/sh" > /data/local/nstools.sh;
+sed -e "/^.*scaling_min_freq.*$/d" /data/data/mobi.cyann.nstools/settings/default >> /data/local/nstools.sh;
+    busybox chmod +x /data/local/nstools.sh;
+    logwrapper /system/bin/sh /data/local/nstools.sh;
+fi;
+exit 0

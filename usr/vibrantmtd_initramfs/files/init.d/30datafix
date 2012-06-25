@@ -1,0 +1,32 @@
+#!/system/xbin/sh
+
+dirs_to_move='databases shared_prefs opera app_databases'
+skip_apps='bn.ereader'
+datadata='/data/data'
+yaffs='/datadata'
+
+cd "$datadata" &&
+for app in *; do
+        echo " $skip_apps " | grep " $app " && continue
+        for d in $dirs_to_move; do
+                if [ ! -L "$app/$d" -a -d "$app/$d" ]; then
+                        echo "Processing $app/$d..." &&
+                        if [ -d "$yaffs/$app/$d" ]; then
+                                rm -r "$yaffs/$app/$d"
+                        fi &&
+                        tar -cf - "$app/$d" | tar -C "$yaffs" -xf - &&
+                        rm -r "$app/$d" &&
+                        ln -s "$yaffs/$app/$d" "$app/$d" &&
+                        chmod 775 "$yaffs/$app" ||
+                                echo 1>&2 "Error: failed moving $app/$d"
+                fi
+        done
+done
+
+cd "$yaffs" &&
+for d in *; do
+        if [ -d "$d" -a ! -d "$datadata/$d" ]; then
+                echo "Removing stale app resources $d..."
+                rm -r "$d"
+        fi
+done

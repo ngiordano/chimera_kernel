@@ -1,0 +1,7 @@
+#!/system/bin/sh
+#
+
+echo "2000000" > /sys/devices/virtual/misc/liveoc/oc_target_high
+echo "400000" > /sys/devices/virtual/misc/liveoc/oc_target_low
+
+

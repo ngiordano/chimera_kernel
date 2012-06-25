@@ -1,0 +1,13 @@
+#!/system/bin/sh
+#
+profile=`cat /etc/devil/profile`
+if [ $profile = "smooth" ]; then
+    busybox chmod +x /data/local/devil/smooth.sh;
+    logwrapper /system/bin/sh /data/local/devil/smooth.sh;
+fi
+
+
+if [ $profile = "powersave" ]; then
+    busybox chmod +x /data/local/devil/powersave.sh;
+    logwrapper /system/bin/sh /data/local/devil/powersave.sh;
+fi
